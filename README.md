@@ -17,7 +17,7 @@
 - 🧠 **Adaptive Branching Engine:** Luồng câu hỏi thay đổi động dựa trên điểm số (Cost-tag) của các câu trả lời trước đó.
 - 📊 **Cá nhân hóa kết quả (Personal Dashboard):** Vẽ biểu đồ Radar phân tích 4 khía cạnh hành vi và xếp loại người dùng vào 4 Archetypes (Nhà Quản Trị, Người Đồng Hành, v.v.).
 - 📈 **Admin Analytics:** Dashboard quản trị thống kê phân bổ sinh viên theo khoa, điểm trung bình, và xu hướng hành vi (sử dụng Chart.js).
-- ⚡ **Kiến trúc MVC tối giản:** Framework tự build bằng Pure PHP, siêu nhẹ và dễ mở rộng.
+- ⚡ **Kiến trúc MVC tối giản:** Framework tự build bằng Pure PHP, siêu nhẹ và dễ mở rộng
 
 ## 🛠 Tech Stack
 
