@@ -125,4 +125,4 @@ Quy tắc: **KHÔNG** push trực tiếp lên `main` hoặc `develop`. Mọi c�
 - Thêm module phân tích AI để đọc và phân loại dữ liệu dạng text tự do.
 
 ## 📄 License
-Đồ án môn học --- Phát triển nội bộ.
+Đồ án môn học -------------- Phát triển nội bộ.
