@@ -26,17 +26,17 @@
                     <td class="px-4 py-3 font-semibold bg-gray-50">Mục đích sử dụng</td>
                     <td class="px-4 py-3">Đánh giá xu hướng hành vi trong tình huống trách nhiệm xã hội</td>
                 </tr>
-                <tr class="border-b border-gray-200">
+                <!-- <tr class="border-b border-gray-200">
                     <td class="px-4 py-3 font-semibold bg-gray-50">Phiên bản</td>
                     <td class="px-4 py-3">1.0</td>
-                </tr>
+                </tr> -->
                 <tr class="border-b border-gray-200">
                     <td class="px-4 py-3 font-semibold bg-gray-50">Ngôn ngữ</td>
                     <td class="px-4 py-3">Tiếng Việt</td>
                 </tr>
                 <tr class="border-b border-gray-200">
                     <td class="px-4 py-3 font-semibold bg-gray-50">Số câu</td>
-                    <td class="px-4 py-3">35 câu (7 lô, phân nhánh thích ứng)</td>
+                    <td class="px-4 py-3">35 câu</td>
                 </tr>
                 <tr>
                     <td class="px-4 py-3 font-semibold bg-gray-50">Thời gian dự kiến</td>

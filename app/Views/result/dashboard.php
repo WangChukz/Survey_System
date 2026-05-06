@@ -61,7 +61,6 @@
                 <!-- Điểm số nằm giữa vòng cung -->
                 <div class="absolute bottom-2 text-center">
                     <span class="text-5xl font-extrabold text-gray-900 leading-none"><?= $totalScore ?? 0 ?></span>
-                    <p class="text-[10px] text-gray-400 mt-2 font-medium">/ <?= $maxScore ?? 100 ?> điểm</p>
                 </div>
             </div>
         </div>
