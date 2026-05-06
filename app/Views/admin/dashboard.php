@@ -9,9 +9,6 @@
             <button onclick="window.location.reload()" class="p-2 rounded-lg border border-gray-100 text-gray-400 hover:bg-gray-50 hover:text-gray-900 transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
             </button>
-            <button class="bg-gray-900 text-white px-6 py-2 rounded-lg text-xs font-bold hover:bg-black transition-all shadow-sm flex items-center">
-                Xuất báo cáo
-            </button>
         </div>
     </div>
 
@@ -40,7 +37,6 @@
             <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">Điểm trung bình</p>
             <div class="flex items-end space-x-2">
                 <h2 class="text-3xl font-black text-gray-900 leading-none"><?= $generalStats['average_score'] ?></h2>
-                <span class="text-xs font-bold text-gray-400 mb-0.5 pb-0.5">/ <?= $generalStats['average_max_score'] ?? '0' ?></span>
             </div>
         </div>
     </div>

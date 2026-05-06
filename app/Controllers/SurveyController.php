@@ -43,6 +43,14 @@ class SurveyController extends Controller
      */
     public function index(): void
     {
+        // Reset phiên làm việc cũ nếu người dùng cố tình quay lại trang chủ
+        if (isset($_SESSION['attempt_id'])) {
+            unset($_SESSION['attempt_id']);
+        }
+        if (isset($_SESSION['participant_id'])) {
+            unset($_SESSION['participant_id']);
+        }
+
         $this->render('home/index');
     }
 
@@ -103,7 +111,34 @@ class SurveyController extends Controller
             return;
         }
 
+        // Chặn truy cập trực tiếp bằng cách copy/paste URL (Referer rỗng hoặc từ trang ngoài)
+        $referer = $_SERVER['HTTP_REFERER'] ?? '';
+        if (empty($referer) || strpos($referer, BASE_URL) !== 0) {
+            $this->redirect(BASE_URL . '/');
+            return;
+        }
+
+        $attemptId = (int)$_SESSION['attempt_id'];
+        $attempt = $this->responseModel->getAttemptById($attemptId);
+        
+        if (!$attempt) {
+            $this->redirect(BASE_URL . '/');
+            return;
+        }
+
+        if ($attempt['status'] === 'completed') {
+            $this->redirect(BASE_URL . '/result');
+            return;
+        }
+
+        $allowedBatch = $attempt['current_batch'];
         $batchId = $_GET['batch'] ?? '1';
+
+        // Ngăn chặn truy cập batch trái phép qua URL
+        if ($allowedBatch !== null && $batchId !== $allowedBatch) {
+            $this->redirect(BASE_URL . '/survey?batch=' . $allowedBatch);
+            return;
+        }
 
         $questions = $this->questionModel->getQuestionsByBatch($batchId);
         
@@ -162,6 +197,13 @@ class SurveyController extends Controller
     public function showResult(): void
     {
         if (!isset($_SESSION['attempt_id'])) {
+            $this->redirect(BASE_URL . '/');
+            return;
+        }
+
+        // Chặn truy cập trực tiếp bằng cách copy/paste URL (Referer rỗng hoặc từ trang ngoài)
+        $referer = $_SERVER['HTTP_REFERER'] ?? '';
+        if (empty($referer) || strpos($referer, BASE_URL) !== 0) {
             $this->redirect(BASE_URL . '/');
             return;
         }

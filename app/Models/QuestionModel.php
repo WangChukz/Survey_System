@@ -52,21 +52,4 @@ class QuestionModel extends Model
         return array_values($questions);
     }
 
-    /**
-     * Lấy danh sách các đáp án chỉ thuộc về một câu hỏi cụ thể.
-     *
-     * @param int $questionId ID của câu hỏi.
-     * @return array Danh sách đáp án.
-     */
-    public function getOptionsByQuestion(int $questionId): array
-    {
-        $sql = "SELECT id, option_text, points, cost_tag 
-                FROM answer_options 
-                WHERE question_id = :question_id";
-                
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([':question_id' => $questionId]);
-        
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 }

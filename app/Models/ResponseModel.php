@@ -62,7 +62,18 @@ class ResponseModel extends Model
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':p_id' => $participantId, ':s_id' => $surveyId]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+        return $row ?: null;
+    }
+
+    /**
+     * Lấy Attempt theo ID
+     */
+    public function getAttemptById(int $attemptId): ?array
+    {
+        $sql = "SELECT * FROM attempts WHERE id = :id LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $attemptId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ?: null;
     }
 
