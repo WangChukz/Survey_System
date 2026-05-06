@@ -58,7 +58,6 @@
                 <ul class="options-list absolute z-20 w-full bg-white border border-gray-100 rounded-xl shadow-xl mt-2 hidden overflow-x-hidden opacity-0 transform -translate-y-2 transition-all duration-200 max-h-96 overflow-y-auto">
                     <li data-value="SC" class="option-item px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors font-bold bg-gray-50">Single Choice (Chỉ chọn 1)</li>
                     <li data-value="MC" class="option-item px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">Multiple Choice (Chọn nhiều)</li>
-                    <li data-value="Likert" class="option-item px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors">Likert Scale (Thang đo)</li>
                 </ul>
             </div>
         </div>

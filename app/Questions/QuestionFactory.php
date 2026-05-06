@@ -22,11 +22,7 @@ class QuestionFactory
      */
     private static array $map = [
         'multiple_choice' => MultipleChoiceQuestion::class,
-        'text'            => TextQuestion::class,
-        'rating'          => RatingQuestion::class,
         // ← Thêm loại mới tại đây
-        // 'scale'         => ScaleQuestion::class,
-        // 'date'          => DateQuestion::class,
     ];
 
     /**
