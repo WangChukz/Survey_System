@@ -40,7 +40,7 @@
                 </tr>
                 <tr>
                     <td class="px-4 py-3 font-semibold bg-gray-50">Thời gian dự kiến</td>
-                    <td class="px-4 py-3">15-25 phút</td>
+                    <td class="px-4 py-3">15 phút</td>
                 </tr>
             </tbody>
         </table>
