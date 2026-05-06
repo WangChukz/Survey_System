@@ -39,7 +39,7 @@
                     <td class="px-4 py-3">15 câu</td>
                 </tr>
                 <tr>
-                    <td class="px-4 py-3 font-semibold bg-gray-50">Thời gian dự kiến</td>
+                    <td class="px-4 py-3 font-semibold bg-gray-50">Thời gian</td>
                     <td class="px-4 py-3">15 phút</td>
                 </tr>
             </tbody>
