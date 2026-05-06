@@ -16,13 +16,22 @@ class AuthController extends Controller
             $this->redirect(BASE_URL . '/admin');
         }
 
+        // Kiểm tra xem có đang bị khóa không
+        $error = $_SESSION['login_error'] ?? null;
+        if (isset($_SESSION['lockout_until']) && time() < $_SESSION['lockout_until']) {
+            $remaining = ceil(($_SESSION['lockout_until'] - time()) / 60);
+            $error = "Tài khoản tạm thời bị khóa. Vui lòng thử lại sau $remaining phút.";
+        }
+
         $this->render('admin/login', [
             'maxWidth' => 'max-w-md',
-            'error' => $_SESSION['login_error'] ?? null
-        ], 'layout'); // Dùng layout gốc để căn giữa màn hình, không hiện sidebar admin
+            'error' => $error
+        ], 'layout');
 
-        // Xóa thông báo lỗi sau khi hiển thị
-        unset($_SESSION['login_error']);
+        // Xóa thông báo lỗi sau khi hiển thị (trừ khi đang bị khóa)
+        if (!isset($_SESSION['lockout_until']) || time() >= $_SESSION['lockout_until']) {
+            unset($_SESSION['login_error']);
+        }
     }
 
     /**
@@ -31,22 +40,39 @@ class AuthController extends Controller
     public function authenticate(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Kiểm tra xem có đang bị khóa không
+            if (isset($_SESSION['lockout_until']) && time() < $_SESSION['lockout_until']) {
+                $this->redirect(BASE_URL . '/admin/login');
+                return;
+            }
+
             $username = trim($_POST['username'] ?? '');
             $password = $_POST['password'] ?? '';
 
-            // Lấy thông tin Admin từ biến môi trường (.env)
             $adminUser = getenv('ADMIN_USER') ?: 'admin';
-            $adminPass = getenv('ADMIN_PASS') ?: '123456'; 
+            $adminPassHash = getenv('ADMIN_PASS') ?: '';
 
-            if ($username === $adminUser && $password === $adminPass) {
-                // Đăng nhập thành công
+            if ($username === $adminUser && password_verify($password, $adminPassHash)) {
+                // Đăng nhập thành công -> Reset số lần sai
+                unset($_SESSION['login_attempts']);
+                unset($_SESSION['lockout_until']);
+
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['admin_username'] = $username;
                 
                 $this->redirect(BASE_URL . '/admin');
             } else {
-                // Đăng nhập thất bại
-                $_SESSION['login_error'] = 'Tài khoản hoặc mật khẩu không chính xác.';
+                // Đăng nhập thất bại -> Tăng số lần sai
+                $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
+
+                if ($_SESSION['login_attempts'] >= 5) {
+                    $_SESSION['lockout_until'] = time() + 300; // Khóa 5 phút
+                    $_SESSION['login_error'] = 'Bạn đã nhập sai quá 5 lần. Tài khoản bị khóa trong 5 phút.';
+                } else {
+                    $remaining = 5 - $_SESSION['login_attempts'];
+                    $_SESSION['login_error'] = "Tài khoản hoặc mật khẩu không chính xác. Còn $remaining lần thử.";
+                }
+                
                 $this->redirect(BASE_URL . '/admin/login');
             }
         }
