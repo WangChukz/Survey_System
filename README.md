@@ -89,17 +89,20 @@ Dưới đây là các hình ảnh thực tế mô phỏng hoạt động của 
 ### 7.1. Giao diện Người dùng (Trang Khảo sát)
 > *Giao diện làm bài của Sinh viên*
 
-![alt text](image.png)
+<img width="1360" height="766" alt="Survey UI" src="https://github.com/user-attachments/assets/182b083e-ad85-4159-91b2-dd68dc95badc" />
+
 
 ### 7.2. Giao diện Kết quả (Client Dashboard)
 > *Dashboard Kết quả Cá nhân*
 
-![alt text](image-2.png)
+<img width="1339" height="758" alt="Client Dashboard" src="https://github.com/user-attachments/assets/e6d6ad37-64a5-44c0-9b17-928c0ff76eec" />
+
 
 ### 7.3. Giao diện Quản trị (Admin Dashboard)
 > *Dashboard Quản trị Hệ thống*
 
-![alt text](image-5.png)
+<img width="1347" height="766" alt="Admin Dashboard" src="https://github.com/user-attachments/assets/afe07f59-d2d9-44ab-815d-18baf502fa50" />
+
 
 ## 8. Các Luồng Xử Lý Bài Toán
 
