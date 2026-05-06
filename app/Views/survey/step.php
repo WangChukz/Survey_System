@@ -1,5 +1,4 @@
 <div class="mb-8 border-b border-gray-100 pb-5">
-    <h2 class="text-xl font-bold text-gray-900">Tiến trình: Lô <?= htmlspecialchars($batchId ?? '') ?></h2>
     <p class="text-sm text-gray-500 mt-1">Vui lòng chọn đáp án phản ánh đúng nhất hành vi thực tế của bạn.</p>
 </div>
 
