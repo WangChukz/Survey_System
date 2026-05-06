@@ -1,0 +1,95 @@
+/* 
+ * App CSS
+ * Phục vụ cho giao diện layout cũ hoặc các tuỳ chỉnh ngoài Tailwind.
+ */
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af;
+}
+
+/* Base Styles cho main layout */
+.site-header {
+    background: white;
+    border-bottom: 1px solid #f3f4f6;
+    padding: 1rem 0;
+}
+
+.site-header .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.site-nav .nav-link {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.site-nav .nav-link:hover {
+    color: #111827;
+}
+
+.site-main {
+    min-height: calc(100vh - 140px);
+    padding: 2rem 0;
+}
+
+.site-main .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.site-footer {
+    text-align: center;
+    padding: 1.5rem 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+    border-top: 1px solid #f3f4f6;
+}
+
+/* Các tuỳ chỉnh thêm cho Survey Form */
+.survey-form input[type="radio"],
+.survey-form input[type="checkbox"] {
+    accent-color: #111827;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}

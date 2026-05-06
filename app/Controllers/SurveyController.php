@@ -50,6 +50,9 @@ class SurveyController extends Controller
         if (isset($_SESSION['participant_id'])) {
             unset($_SESSION['participant_id']);
         }
+        if (isset($_SESSION['allow_result_access'])) {
+            unset($_SESSION['allow_result_access']);
+        }
 
         $this->render('home/index');
     }
@@ -79,11 +82,10 @@ class SurveyController extends Controller
 
             if ($existingAttempt) {
                 if ($existingAttempt['status'] === 'completed') {
-                    // Đã làm xong -> Gợi ý xem lại kết quả
-                    $_SESSION['error'] = 'Bạn đã hoàn thành bài khảo sát này trước đó.';
-                    $_SESSION['can_view_result'] = true;
-                    $_SESSION['attempt_id'] = $existingAttempt['id']; // Gán ID để trang kết quả có thể truy xuất
-                    $this->redirect(BASE_URL . '/');
+                    // Đã làm xong -> Tự động chuyển thẳng sang trang kết quả
+                    $_SESSION['attempt_id'] = $existingAttempt['id'];
+                    $_SESSION['allow_result_access'] = true; // Cấp quyền truy cập result
+                    $this->redirect(BASE_URL . '/result');
                     return;
                 } else {
                     // Đang làm dở -> resume
@@ -111,13 +113,6 @@ class SurveyController extends Controller
             return;
         }
 
-        // Chặn truy cập trực tiếp bằng cách copy/paste URL (Referer rỗng hoặc từ trang ngoài)
-        $referer = $_SERVER['HTTP_REFERER'] ?? '';
-        if (empty($referer) || strpos($referer, BASE_URL) !== 0) {
-            $this->redirect(BASE_URL . '/');
-            return;
-        }
-
         $attemptId = (int)$_SESSION['attempt_id'];
         $attempt = $this->responseModel->getAttemptById($attemptId);
         
@@ -140,15 +135,22 @@ class SurveyController extends Controller
             return;
         }
 
-        $questions = $this->questionModel->getQuestionsByBatch($batchId);
+        $questionsData = $this->questionModel->getQuestionsByBatch($batchId);
         
-        if (empty($questions)) {
+        if (empty($questionsData)) {
             die("Không tìm thấy dữ liệu cho Lô câu hỏi này.");
+        }
+
+        // Khởi tạo các đối tượng câu hỏi (OOP) bằng Factory
+        $questionObjects = [];
+        foreach ($questionsData as $index => $qData) {
+            $type = $qData['question_type'] ?? 'SC';
+            $questionObjects[] = \App\Questions\QuestionFactory::create($type, $qData, $index);
         }
 
         $this->render('survey/step', [
             'batchId' => $batchId,
-            'questions' => $questions
+            'questions' => $questionObjects
         ]);
     }
 
@@ -187,6 +189,7 @@ class SurveyController extends Controller
         if ($nextBatchId !== null) {
             $this->redirect(BASE_URL . '/survey?batch=' . $nextBatchId);
         } else {
+            $_SESSION['allow_result_access'] = true; // Cấp quyền xem kết quả
             $this->redirect(BASE_URL . '/result');
         }
     }
@@ -196,14 +199,23 @@ class SurveyController extends Controller
      */
     public function showResult(): void
     {
+        // 1. Chặn nếu chưa có session
         if (!isset($_SESSION['attempt_id'])) {
             $this->redirect(BASE_URL . '/');
             return;
         }
 
-        // Chặn truy cập trực tiếp bằng cách copy/paste URL (Referer rỗng hoặc từ trang ngoài)
-        $referer = $_SERVER['HTTP_REFERER'] ?? '';
-        if (empty($referer) || strpos($referer, BASE_URL) !== 0) {
+        // 2. Chặn truy cập trực tiếp bằng URL (bắt buộc phải qua form kiểm tra thông tin hoặc vừa nộp bài xong)
+        if (!isset($_SESSION['allow_result_access']) || $_SESSION['allow_result_access'] !== true) {
+            $this->redirect(BASE_URL . '/');
+            return;
+        }
+
+        $attemptId = $_SESSION['attempt_id'];
+        
+        // Kiểm tra xem bài khảo sát đã hoàn thành chưa
+        $attempt = $this->responseModel->getAttemptById($attemptId);
+        if (!$attempt || $attempt['status'] !== 'completed') {
             $this->redirect(BASE_URL . '/');
             return;
         }
@@ -227,9 +239,9 @@ class SurveyController extends Controller
             'groupName' => $insights['groupName'],
             'totalScore' => $insights['totalScore'],
             'maxScore' => $insights['maxScore'],
-            'radarData' => $insights['radarData'],
-            'doughnutData' => $insights['doughnutData'],
-            'similarityData' => $insights['similarityData']
+            'similarityData' => $insights['similarityData'],
+            'radarData' => $insights['radarData'] ?? [],
+            'doughnutData' => $insights['doughnutData'] ?? []
         ]);
     }
 }

@@ -53,13 +53,7 @@
                 <span class="text-sm font-medium"><?= htmlspecialchars($_SESSION['error']) ?></span>
             </div>
             
-            <?php if (isset($_SESSION['can_view_result'])): ?>
-                <a href="<?= BASE_URL ?>/result" class="inline-flex items-center px-4 py-2 bg-gray-900 text-white text-xs font-bold rounded-lg hover:bg-black transition-colors shrink-0">
-                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                    Xem kết quả của bạn
-                </a>
-                <?php unset($_SESSION['can_view_result']); ?>
-            <?php endif; ?>
+
         </div>
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>

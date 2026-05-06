@@ -35,41 +35,45 @@ class AdminController extends Controller
         // 2. Lấy dữ liệu phân bổ theo Khoa
         $facultyDistribution = $this->analyticsModel->getParticipantCountByFaculty();
         
-        // Cấu trúc lại để Chart.js dễ đọc (labels, data)
-        $facultyChartData = [
-            'labels' => [],
-            'data' => []
-        ];
+        $facultyLabels = [];
+        $facultyData = [];
         foreach ($facultyDistribution as $row) {
-            $facultyChartData['labels'][] = $row['faculty'] ?: 'Khác';
-            $facultyChartData['data'][] = $row['student_count'];
+            $facultyLabels[] = $row['faculty'] ?: 'Khác';
+            $facultyData[] = $row['student_count'];
         }
+
+        $facultyChartData = json_encode([
+            'labels' => $facultyLabels,
+            'data' => $facultyData
+        ]);
 
         // 3. Lấy dữ liệu điểm trung bình theo Khoa
         $facultyScores = $this->analyticsModel->getAverageScoreByFaculty();
-        $scoreChartData = [
-            'labels' => [],
-            'data' => []
-        ];
+        $scoreLabels = [];
+        $scoreData = [];
         foreach ($facultyScores as $row) {
-            $scoreChartData['labels'][] = $row['faculty'] ?: 'Khác';
-            $scoreChartData['data'][] = $row['avg_score'];
+            $scoreLabels[] = $row['faculty'] ?: 'Khác';
+            $scoreData[] = $row['avg_score'];
         }
+        $scoreChartData = json_encode([
+            'labels' => $scoreLabels,
+            'data' => $scoreData
+        ]);
 
         // 4. Lấy dữ liệu xu hướng hành vi (Radar Chart)
         $traits = $this->analyticsModel->getBehavioralTraitsGlobal();
-        $traitsChartData = [
+        $traitsChartData = json_encode([
             'labels' => array_keys($traits),
             'data' => array_values($traits)
-        ];
+        ]);
 
         // Gửi dữ liệu xuống View
         $this->render('admin/dashboard', [
             'maxWidth' => 'max-w-full', // Nới rộng toàn màn hình cho Admin
             'generalStats' => $generalStats,
-            'facultyChartData' => json_encode($facultyChartData, JSON_UNESCAPED_UNICODE),
-            'scoreChartData' => json_encode($scoreChartData, JSON_UNESCAPED_UNICODE),
-            'traitsChartData' => json_encode($traitsChartData, JSON_UNESCAPED_UNICODE)
+            'facultyChartData' => $facultyChartData,
+            'scoreChartData' => $scoreChartData,
+            'traitsChartData' => $traitsChartData
         ], 'admin_layout');
     }
 

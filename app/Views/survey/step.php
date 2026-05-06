@@ -7,37 +7,8 @@
     <input type="hidden" name="response_time_ms" value="15000"> <!-- Giả lập JS tracking -->
 
     <?php if (!empty($questions)): ?>
-        <?php foreach ($questions as $index => $q): ?>
-            <div class="bg-gray-50/50 rounded-xl p-5 border border-gray-100 transition-colors hover:border-gray-200">
-                <p class="font-medium text-gray-900 mb-5 leading-relaxed text-[15px]">
-                    <span class="text-gray-400 mr-1"><?= $index + 1 ?>.</span> 
-                    <?= htmlspecialchars($q['content']) ?>
-                </p>
-                
-                <div class="space-y-2.5">
-                    <?php foreach ($q['options'] as $opt): ?>
-                        <label class="flex items-start space-x-3 p-3.5 rounded-lg border border-transparent hover:bg-white hover:shadow-sm hover:border-gray-200 cursor-pointer transition-all duration-200 group">
-                            <div class="flex-shrink-0 mt-0.5">
-                                <?php if ($q['question_type'] === 'SC'): ?>
-                                    <input type="radio" 
-                                        name="answers[<?= $q['id'] ?>]" 
-                                        value="<?= $opt['id'] ?>" 
-                                        required
-                                        class="w-4 h-4 text-gray-900 border-gray-300 focus:ring-gray-900 cursor-pointer transition-colors">
-                                <?php else: ?>
-                                    <input type="checkbox" 
-                                        name="answers[<?= $q['id'] ?>][]" 
-                                        value="<?= $opt['id'] ?>"
-                                        class="w-4 h-4 text-gray-900 rounded border-gray-300 focus:ring-gray-900 cursor-pointer transition-colors">
-                                <?php endif; ?>
-                            </div>
-                            <span class="text-gray-600 text-sm group-hover:text-gray-900 transition-colors leading-snug pt-0.5">
-                                <?= htmlspecialchars($opt['option_text']) ?>
-                            </span>
-                        </label>
-                    <?php endforeach; ?>
-                </div>
-            </div>
+        <?php foreach ($questions as $q): ?>
+            <?= $q->renderWithWrapper() ?>
         <?php endforeach; ?>
     <?php endif; ?>
 
