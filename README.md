@@ -1,128 +1,168 @@
-# 🎯 Adaptive SJT Survey System
+# Adaptive SJT Survey System
 
-> Hệ thống Khảo sát Trắc nghiệm Tình huống Thích ứng (Adaptive Situational Judgment Test) phân tích hành vi và xu hướng ra quyết định của sinh viên.
+Hệ thống Khảo sát Trắc nghiệm Tình huống Thích ứng (Adaptive Situational Judgment Test) phân tích hành vi và xu hướng ra quyết định của đối tượng khảo sát.
 
 ---
 
-## 📖 Overview
+## 1. Tổng quan dự án (Overview)
 
-- **Problem:** Khảo sát truyền thống thường tuyến tính và nhàm chán, không đánh giá đúng phản xạ thực tế của người tham gia khi đối mặt với các tình huống phức tạp.
-- **Solution:** Hệ thống áp dụng phương pháp SJT kết hợp logic rẽ nhánh thích ứng (Adaptive Branching). Căn cứ vào các lựa chọn trước đó của sinh viên, hệ thống sẽ tự động điều chỉnh độ khó và nội dung các câu hỏi tiếp theo, sau đó đúc kết ra "chân dung hành vi" (Archetype).
+- **Vấn đề nghiên cứu:** Các bài khảo sát truyền thống thường được thiết kế tuyến tính, dẫn đến sự nhàm chán và không đánh giá chính xác phản xạ thực tế của người tham gia khi đối mặt với các tình huống phức tạp.
+- **Giải pháp đề xuất:** Xây dựng hệ thống áp dụng phương pháp SJT kết hợp thuật toán rẽ nhánh thích ứng (Adaptive Branching). Căn cứ vào điểm số của các lựa chọn trước đó, hệ thống tự động điều chỉnh nội dung các lô câu hỏi tiếp theo, từ đó phân loại và đúc kết "chân dung hành vi" (Archetype) của người tham gia.
 - **Đối tượng sử dụng:** 
-  - **Sinh viên:** Tham gia khảo sát và nhận phân tích cá nhân.
-  - **Admin / Nhà trường:** Thu thập dữ liệu thống kê tổng quan toàn trường.
+  - **Sinh viên / Người tham gia:** Thực hiện khảo sát và nhận báo cáo phân tích cá nhân.
+  - **Quản trị viên / Nhà nghiên cứu:** Thu thập, quản lý ngân hàng câu hỏi và thống kê dữ liệu tổng quan.
 
-## ✨ Features
+## 2. Tính năng chính (Core Features)
 
-- 🧠 **Adaptive Branching Engine:** Luồng câu hỏi thay đổi động dựa trên điểm số (Cost-tag) của các câu trả lời trước đó.
-- 📊 **Cá nhân hóa kết quả (Personal Dashboard):** Vẽ biểu đồ Radar phân tích 4 khía cạnh hành vi và xếp loại người dùng vào 4 Archetypes (Nhà Quản Trị, Người Đồng Hành, v.v.).
-- 📈 **Admin Analytics:** Dashboard quản trị thống kê phân bổ sinh viên theo khoa, điểm trung bình, và xu hướng hành vi (sử dụng Chart.js).
-- ⚡ **Kiến trúc MVC tối giản:** Framework tự build bằng Pure PHP, siêu nhẹ và dễ mở rộng
+- **Adaptive Branching Engine:** Thuật toán rẽ nhánh linh hoạt (7 lô) tính toán ngưỡng điểm ngay thời gian thực để quyết định luồng câu hỏi tiếp theo.
+- **Dashboard Phân tích Cá nhân:** Trực quan hóa dữ liệu người dùng qua Radar Chart (đánh giá 5 khía cạnh hành vi) và Doughnut Chart (phân loại Archetype).
+- **Trang Quản trị Hệ thống:** Quản lý ngân hàng câu hỏi và biểu đồ thống kê tổng quan (phân bổ sinh viên, điểm trung bình toàn hệ thống).
+- **Kiến trúc MVC:** Framework tự phát triển bằng Pure PHP, đảm bảo tính đóng gói, dễ bảo trì và khả năng mở rộng cao.
 
-## 🛠 Tech Stack
+## 3. Kiến trúc Công nghệ (Tech Stack)
 
 - **Frontend:** HTML5, CSS3, TailwindCSS, ES6+
-- **Biểu đồ:** Chart.js v4
-- **Backend:** Pure PHP 8.0+ (Custom MVC Framework)
-- **Database:** MySQL 5.7+ / MariaDB 10.3+ (PDO)
-- **Server:** Apache (XAMPP/WAMP) với `mod_rewrite`
+- **Thư viện Trực quan hóa:** Chart.js v4
+- **Backend:** PHP 8.0+ (Kiến trúc Custom MVC)
+- **Cơ sở dữ liệu:** Microsoft SQL Server (kết nối qua PDO)
+- **Môi trường triển khai:** Apache (XAMPP/WAMP) với cấu hình `mod_rewrite`
 
-## 📁 Project Structure
+## 4. Cấu trúc thư mục (Project Structure)
 
-Dự án áp dụng kiến trúc **Module-Based** để các thành viên phát triển Fullstack:
+Dự án áp dụng kiến trúc Module-Based nhằm tối ưu hóa quá trình làm việc nhóm:
 
 ```text
 Survey_System/
-├── Core/                        # [M1] Mini-framework & Router
+├── Core/                        # Mini-framework & Router
 ├── app/                         # Logic ứng dụng chính
-│   ├── Controllers/             # [M3, M5] Điều hướng luồng Survey, Admin
-│   ├── Models/                  # [M3, M4, M5] Logic DB (Question, Result, Analytics)
-│   ├── Services/                # [M2] AdaptiveLogic Engine
-│   └── Views/                   # [M3, M4, M5] Giao diện người dùng
-├── config/                      # [M6] File cấu hình ứng dụng
-├── database/                    # [M6] File backup database.sql
-├── docs/                        # [M6] Tài liệu thiết kế & quản lý dự án
+│   ├── Controllers/             # Điều phối request (Survey, Admin, Auth)
+│   ├── Models/                  # Tương tác Cơ sở dữ liệu (Response, Analytics)
+│   ├── Services/                # Thuật toán nghiệp vụ (AdaptiveLogic)
+│   └── Views/                   # Giao diện người dùng
+├── config/                      # Tệp cấu hình ứng dụng (Environment, Database)
+├── database/                    # Tệp lưu trữ Schema và Seed data (database.sql)
+├── docs/                        # Tài liệu đặc tả hệ thống và quản lý dự án
 └── public/
-    ├── index.php                # Front Controller duy nhất
-    └── .htaccess                # Cấu hình Apache mod_rewrite
+    ├── index.php                # Front Controller xử lý mọi Request
+    └── .htaccess                # Cấu hình định tuyến Apache
 ```
 
-## 🚀 Installation & Setup
+## 5. Hướng dẫn cài đặt (Installation & Setup)
 
-**1. Clone project và thiết lập thư mục**
-Đặt source code vào thư mục webroot của XAMPP:
+**Bước 1: Triển khai mã nguồn**
+Di chuyển source code vào thư mục webroot của XAMPP:
 ```bash
 git clone https://github.com/your-repo/Survey_System.git
-# Chuyển vào htdocs: C:\xampp\htdocs\KT2\Survey_System\
+# Đường dẫn cài đặt: C:\xampp\htdocs\KT2\Survey_System\
 ```
 
-**2. Setup Database**
-- Khởi động **Apache** và **MySQL** trên XAMPP.
-- Mở `http://localhost/phpmyadmin`
-- Import file cơ sở dữ liệu có sẵn tại: `database/database.sql`
+**Bước 2: Cấu hình Cơ sở dữ liệu**
+- Khởi động Apache và dịch vụ Microsoft SQL Server.
+- Khởi tạo cơ sở dữ liệu `survey_system` và thực thi tệp script tại: `database/database.sql` để thiết lập Schema và dữ liệu mẫu.
 
-**3. Setup Môi trường**
-Mở file `config/app.php` và cấu hình các biến cơ bản:
+**Bước 3: Thiết lập Môi trường**
+Sửa đổi các hằng số cấu hình trong tệp `config/app.php` hoặc `.env`:
 ```php
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_USER', 'sa');
+define('DB_PASS', 'your_password');
 define('DB_NAME', 'survey_system');
 define('BASE_URL', 'http://localhost/KT2/Survey_System/public');
 ```
 
-**4. Khởi chạy**
-- Trang Sinh viên: `http://localhost/KT2/Survey_System/public/`
-- Trang Admin: `http://localhost/KT2/Survey_System/public/admin`
+**Bước 4: Khởi chạy ứng dụng**
+- Giao diện Sinh viên: `http://localhost/KT2/Survey_System/public/`
+- Giao diện Admin: `http://localhost/KT2/Survey_System/public/admin`
 
-## 🗄 Database Design
+## 6. Thiết kế Cơ sở dữ liệu (Database Design)
 
-Hệ thống xoay quanh 5 bảng chính:
-- `questions` & `answer_options`: Lưu trữ câu hỏi theo lô (batch) và trọng số điểm (cost).
-- `users`: Thông tin sinh viên (MSSV, Tên, Khoa).
-- `attempts`: Lưu lượt làm bài khảo sát (thời gian, điểm tổng, archetype kết quả).
-- `attempt_answers`: Chi tiết từng câu trả lời của sinh viên.
+Hệ thống được thiết kế theo chuẩn dạng 1 (1NF) bao gồm 9 bảng chính:
+- `surveys`, `questions`, `answer_options`: Nhóm cấu trúc và nội dung khảo sát.
+- `participants`, `attempts`: Nhóm quản lý người tham gia và phiên làm bài.
+- `attempt_answers`, `attempt_answer_options`: Nhóm lưu trữ kết quả trả lời chi tiết.
+- `results`, `result_metrics`: Nhóm lưu trữ phân tích kết quả chuyên sâu.
 
-## 💻 Usage
+## 7. Giao Diện Minh Họa (Screenshots & Demo)
 
-1. **Sinh viên:** Truy cập trang chủ -> Điền thông tin -> Làm Lô 1 (5 câu). Tùy vào điểm Lô 1, hệ thống rẽ nhánh sang Lô 2A/2B -> Nhận kết quả Radar Chart ngay lập tức.
-2. **Admin:** Truy cập route `/admin` để xem Doughnut chart thống kê phân bổ khoa và Radar chart tổng thể.
+Dưới đây là các hình ảnh thực tế mô phỏng hoạt động của hệ thống:
 
-## 📸 Screenshots / Demo
+### 7.1. Giao diện Người dùng (Trang Khảo sát)
+> *Giao diện làm bài của Sinh viên*
 
-*(Thêm hình ảnh thực tế của dự án tại đây)*
-- ![Trang Chủ](placeholder_home.png)
-- ![Dashboard Sinh Viên](placeholder_result.png)
-- ![Admin Analytics](placeholder_admin.png)
+![alt text](image.png)
 
-## 👥 Team & Contribution
+### 7.2. Giao diện Kết quả (Client Dashboard)
+> *Dashboard Kết quả Cá nhân*
 
-Dự án áp dụng phương pháp **Quản lý theo Module** (Fullstack ownership):
-- **Phúc (Lead):** Core Framework & Thuật toán AdaptiveLogic
-- **Hiếu:** Module Khảo sát (Question/Response Flow)
-- **Khanh:** Module Kết quả (Tính điểm & Vẽ Radar)
-- **Trang Anh:** Module Quản trị (Admin Analytics & Dashboard)
-- **Tú:** Nền tảng Vận hành (DB Config, DevOps, Testing)
+![alt text](image-2.png)
 
-## 🔄 Git Workflow
+### 7.3. Giao diện Quản trị (Admin Dashboard)
+> *Dashboard Quản trị Hệ thống*
 
-Dự án tuân thủ **GitHub Flow**:
-- `main`: Code ổn định, production-ready.
-- `develop`: Nhánh tích hợp chính.
-- `feature/[ten-ban]-[ten-task]`: Nhánh phát triển tính năng riêng của từng thành viên (VD: `feature/khanh-result-dashboard`).
+![alt text](image-5.png)
 
-Quy tắc: **KHÔNG** push trực tiếp lên `main` hoặc `develop`. Mọi cập nhật phải qua Pull Request.
+## 8. Các Luồng Xử Lý Bài Toán
 
-## ⚠️ Known Issues / Limitations
+Hệ thống hoạt động dựa trên 3 luồng xử lý chính:
 
-- Trang `/admin` hiện tại chỉ dành cho mục đích demo nội bộ, chưa tích hợp Middleware xác thực (Authentication).
-- Dữ liệu khảo sát ban đầu (Seed data) là dữ liệu giả lập, cần cập nhật ngân hàng câu hỏi chuẩn tâm lý học trước khi ra thực tế.
+### Luồng 1: Sinh Viên Làm Bài (7 Lô — 35 Câu)
 
-## 🔮 Future Improvements
+```text
+[Trang chủ] → [Nhập: Họ tên, Mã SV, Khoa]
+                     ↓
+              [Lô 1: 5 câu (Q01–Q05)]
+                     ↓
+         Điểm ≥ 10 ──────── Điểm < 10
+              ↓                    ↓
+    [Lô 2A: 5 câu]         [Lô 2B: 5 câu]
+     (Q06–Q10)              (Q11–Q15)
+         ↓                        ↓
+   ≥12      <12              ≥9       <9
+   ↓          ↓               ↓         ↓
+[Lô 3A1] [Lô 3A2]        [Lô 3B1]  [Lô 3B2]
+(Q16–Q20)(Q21–Q25)       (Q26–Q30) (Q31–Q35)
+         ↓                        ↓
+    [Dashboard Kết Quả Cá Nhân]
+    (Archetype + Radar + Doughnut + Similarity)
+```
 
-- Tích hợp đăng nhập SSO với tài khoản nhà trường.
-- Xuất báo cáo PDF tự động cho sinh viên.
-- Thêm module phân tích AI để đọc và phân loại dữ liệu dạng text tự do.
+**Ngưỡng rẽ nhánh:**
+- Lô 1: ≥ 10 (lên 2A), < 10 (xuống 2B)
+- Lô 2A: ≥ 12 (lên 3A1), < 12 (xuống 3A2)
+- Lô 2B: ≥ 9 (lên 3B1), < 9 (xuống 3B2)
 
-## 📄 License
-Đồ án môn học - Phát triển nội bộ.
+**4 nhóm hành vi chính đầu ra:**
+- **3A1:** Trách nhiệm cao – Chủ động
+- **3A2:** Trách nhiệm cao – Thận trọng 
+- **3B1:** Trách nhiệm thấp – Thụ động
+- **3B2:** Trách nhiệm thấp – Cá nhân
+
+### Luồng 2: Sinh Viên Đã Làm Trước Đó (Mỗi người dùng chỉ được trả lời 1 lần)
+
+```text
+[Trang chủ] → [Nhập Mã SV] → [Phát hiện attempt đã completed]
+                                        ↓
+                           [Thông báo + Nút "Xem kết quả"]
+                                        ↓
+                          [Dashboard Kết Quả Cá Nhân]
+```
+*(Nếu đang làm dở hệ thống sẽ tiếp tục tại phiên làm bài đó)*
+
+### Luồng 3: Quản Trị Viên
+
+```text
+[/admin/login] → [Nhập username/password từ .env]
+                         ↓
+              [Dashboard Admin]
+              ├── Thống kê chung (Tổng SV, Hoàn thành, Điểm TB)
+              ├── Biểu đồ Phân bổ theo Khoa (Doughnut)
+              ├── Biểu đồ Điểm TB theo Khoa (Bar)
+              ├── Biểu đồ Xu hướng hành vi (Radar)
+              └── [Thêm câu hỏi mới] → /admin/questions/add
+```
+
+## 9. Hướng phát triển tương lai
+
+- Nâng cấp hệ thống xác thực của Admin bằng cơ chế Hash Password (bcrypt/Argon2) thay thế cho Plain-text hiện hành.
+- Tích hợp Middleware chống tấn công CSRF cho toàn bộ các biểu mẫu (forms).
+- Cải thiện hệ thống Log và Monitor lỗi ứng dụng trong môi trường Production.
